@@ -94,6 +94,69 @@ function isImageIcon(value){
     /\.(png|jpe?g|gif|webp|svg)$/i.test(value);
 }
 
+/* Font Awesome icon support.
+   Accepts a class string like "fa-solid fa-user" or "fa-brands fa-github".
+   We resolve the actual glyph + font family/weight by probing the live
+   stylesheet — no hard-coded codepoint map to maintain. */
+const FA_STYLE_TOKEN = /(?:^|\s)(fa-solid|fa-regular|fa-brands|fa-light|fa-thin|fa-duotone|fa-sharp|fas|far|fab|fal|fad|fat)\b/;
+function isFontAwesomeIcon(value){
+  if(!value) return false;
+  if(isImageIcon(value)) return false;
+  return FA_STYLE_TOKEN.test(value);
+}
+
+const FA_STYLE_TOKEN_SET = new Set([
+  'fa-solid','fa-regular','fa-brands','fa-light','fa-thin','fa-duotone','fa-sharp',
+  'fas','far','fab','fal','fat','fad','fa'
+]);
+function parseFaClasses(classes){
+  const tokens = classes.trim().split(/\s+/).filter(Boolean);
+  const isSharp = tokens.includes('fa-sharp');
+  let prefix = 'fas';
+  for(const t of tokens){
+    if(t === 'fa-solid'   || t === 'fas') prefix = isSharp ? 'fass' : 'fas';
+    else if(t === 'fa-regular' || t === 'far') prefix = isSharp ? 'fasr' : 'far';
+    else if(t === 'fa-brands'  || t === 'fab') prefix = 'fab';
+    else if(t === 'fa-light'   || t === 'fal') prefix = isSharp ? 'fasl' : 'fal';
+    else if(t === 'fa-thin'    || t === 'fat') prefix = isSharp ? 'fast' : 'fat';
+    else if(t === 'fa-duotone' || t === 'fad') prefix = isSharp ? 'fasd' : 'fad';
+  }
+  let iconName = null;
+  for(const t of tokens){
+    if(FA_STYLE_TOKEN_SET.has(t)) continue;
+    if(t.startsWith('fa-')){ iconName = t.slice(3); break; }
+  }
+  return { prefix, iconName };
+}
+
+const faGlyphCache = new Map();
+function resolveFaIcon(classes){
+  if(faGlyphCache.has(classes)) return faGlyphCache.get(classes);
+  let result = null;
+  try {
+    const { prefix, iconName } = parseFaClasses(classes);
+    if(iconName && window.FontAwesome && typeof window.FontAwesome.icon === 'function'){
+      const def = window.FontAwesome.icon({ prefix, iconName });
+      if(def && def.abstract && def.abstract[0]) result = def.abstract[0];
+    }
+  } catch(e){ result = null; }
+  faGlyphCache.set(classes, result);
+  return result;
+}
+
+function buildSvgFromAbstract(node){
+  const el = document.createElementNS('http://www.w3.org/2000/svg', node.tag);
+  if(node.attributes){
+    for(const k of Object.keys(node.attributes)){
+      el.setAttribute(k, node.attributes[k]);
+    }
+  }
+  if(Array.isArray(node.children)){
+    for(const c of node.children) el.appendChild(buildSvgFromAbstract(c));
+  }
+  return el;
+}
+
 /* Icon darkness detection: decides whether an image is a dark/monochrome
    glyph that should be inverted when the UI switches to dark mode.
    Uses a tiny offscreen canvas, averages luminance + saturation of opaque
@@ -106,7 +169,16 @@ function detectIconDarkness(url){
   const entry = { dark: false, done: false };
   const pending = new Promise(resolve => {
     const img = new Image();
-    img.crossOrigin = 'anonymous';
+    // Only request CORS for absolute cross-origin URLs. Setting crossOrigin
+    // on file:// or relative paths makes the browser refuse the load with
+    // "Unsafe attempt to load URL ... 'file:' URLs are treated as unique
+    // security origins."
+    const isAbsolute = /^https?:\/\//i.test(url);
+    const sameOrigin = isAbsolute && (() => {
+      try { return new URL(url).origin === window.location.origin; }
+      catch(e){ return false; }
+    })();
+    if(isAbsolute && !sameOrigin) img.crossOrigin = 'anonymous';
     const finish = (isDark) => {
       entry.dark = isDark;
       entry.done = true;
@@ -1034,6 +1106,34 @@ function renderNodes(){
       const explicitInvert = typeof n.invertInDark === 'boolean' ? n.invertInDark : null;
       applyIconInvertClass(img, iconVal, explicitInvert);
       g.appendChild(img);
+    } else if(isFontAwesomeIcon(iconVal)){
+      const def = resolveFaIcon(iconVal);
+      if(def){
+        const size = Math.max(14, Math.round(R * 1.2));
+        const svg = se('svg');
+        svg.setAttribute('class', 'node-fa-icon');
+        svg.setAttribute('x', String(-size/2));
+        svg.setAttribute('y', String(-size/2));
+        svg.setAttribute('width', String(size));
+        svg.setAttribute('height', String(size));
+        svg.setAttribute('viewBox', (def.attributes && def.attributes.viewBox) || '0 0 512 512');
+        svg.setAttribute('fill', 'currentColor');
+        svg.setAttribute('pointer-events','none');
+        svg.setAttribute('opacity', n.status==='expl' ? '.5' : '1');
+        if(Array.isArray(def.children)){
+          for(const c of def.children) svg.appendChild(buildSvgFromAbstract(c));
+        }
+        g.appendChild(svg);
+      } else {
+        const ico = se('text');
+        ico.setAttribute('text-anchor','middle');
+        ico.setAttribute('dominant-baseline','central');
+        ico.setAttribute('font-size', iconSize);
+        ico.setAttribute('opacity', n.status==='expl' ? '.5' : '1');
+        ico.setAttribute('pointer-events','none');
+        ico.textContent = '●';
+        g.appendChild(ico);
+      }
     } else {
       const ico = se('text');
       ico.setAttribute('text-anchor','middle');
@@ -1398,6 +1498,7 @@ document.getElementById('e-deps-search').addEventListener('keydown',e=>{
   }
 });
 
+document.getElementById('e-save-top').onclick = () => document.getElementById('e-save').click();
 document.getElementById('e-save').onclick=()=>{
   const raw = document.getElementById('e-title').value.trim();
   if(!raw){alert('Title required.');return;}

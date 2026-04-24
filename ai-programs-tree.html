@@ -6,7 +6,6 @@
 <title>AI Programs of Work</title>
 <link rel="stylesheet" href="styles/tokens.css">
 <link rel="stylesheet" href="styles/tree.css">
-<link rel="stylesheet" href="styles/all.min.css">
 </head>
 <body>
 
@@ -86,7 +85,7 @@
 
     <div class="setting-row">
       <label>Branch distance (horizontal)<span class="val" id="s-side-offset-val"></span></label>
-      <input type="range" id="s-side-offset" min="90" max="280" step="5"/>
+      <input type="range" id="s-side-offset" min="30" max="280" step="5"/>
     </div>
 
     <div class="setting-row">
@@ -166,7 +165,10 @@
 <!-- EDIT MODAL -->
 <div class="modal-bg glass" id="emod">
   <div class="modal">
-    <h2 id="e-head">Edit Node</h2>
+    <div class="modal-head">
+      <h2 id="e-head">Edit Node</h2>
+      <button class="m-btn m-btn-ok" id="e-save-top">Save</button>
+    </div>
     <div class="fg"><label>Title (use \n for line break)</label><input type="text" id="e-title"/></div>
     <div class="fg"><label>Description</label><textarea id="e-desc"></textarea></div>
     <div class="fg"><label>Status</label>
@@ -178,7 +180,7 @@
         <option value="expl">Exploring</option>
       </select>
     </div>
-    <div class="fg"><label>Icon / image path</label><input type="text" id="e-icon" placeholder="emoji, symbol, or images/example.png"/></div>
+    <div class="fg"><label>Icon / image path</label><input type="text" id="e-icon" placeholder="emoji, &quot;fa-solid fa-user&quot;, or images/example.png"/></div>
     <div class="fg"><label>Link URL</label><input type="url" id="e-link" placeholder="https://example.com/work-item"/></div>
     <div class="fg"><label>Estimated delivery date</label><input type="date" id="e-eta"/></div>
     <div class="fg">
@@ -245,7 +247,7 @@
 
 <script src="data/tree-data.js"></script>
 <script src="js/fontawesome.min.js"></script>
-<script src="js/solid.min.js"></script>
+<script src="js/all.min.js"></script>
 <script src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,119 @@
+:root{
+  --font-ui:'Segoe UI',system-ui,sans-serif;
+  --font-mono:'Cascadia Code',monospace;
+
+  /* Bootstrap-like semantic palette (placeholder brand values) */
+  --color-primary:#49b7c5;
+  --color-secondary:#6c757d;
+  --color-success:#198754;
+  --color-info:#0dcaf0;
+  --color-warning:#ffc107;
+  --color-danger:#dc3545;
+  --color-accent:#7c4dff;
+
+
+  --color-1:#7030a0;
+  --color-2:#b82a57;
+  --color-3:#0078d4;
+  --color-4:#6f7878;
+  --color-5:#9a6fb0;
+  --color-6:#4c2a85;
+  --color-7:#006eff;
+  --color-8:#006eff;
+  --color-9:#006eff;
+  --color-10:#006eff;
+
+
+
+  /* Neutral palette */
+  --neutral-0:#ffffff;
+  --neutral-50:#f8f9fa;
+  --neutral-100:#f1f3f5;
+  --neutral-200:#e9ecef;
+  --neutral-300:#dee2e6;
+  --neutral-400:#ced4da;
+  --neutral-500:#adb5bd;
+  --neutral-600:#6c757d;
+  --neutral-700:#495057;
+  --neutral-800:#343a40;
+  --neutral-900:#1d232a;
+  --neutral-950:#111418;
+
+  --status-done:var(--color-success);
+  --status-prog:var(--color-primary);
+  --status-plan:#9b59b6;
+  --status-expl:#e67e22;
+
+  /* Renderer tuning controls */
+  --tree-line-thickness:1;
+  --tree-node-border-thickness:1;
+
+  /* Background gradient controls */
+  --bg-gradient-angle:145deg;
+  --bg-gradient-from:#0b1020;
+  --bg-gradient-to:#1a2340;
+}
+
+html[data-theme="dark"]{
+  --bg-gradient-angle:180deg;
+  --bg-gradient-from:#000000;
+  --bg-gradient-to:#231f20;
+
+  --bg-canvas:#0a0a0d;
+  --bg-panel:rgba(10,10,13,.84);
+  --bg-panel-hover:rgba(30,10,10,.9);
+  --bg-popup:#101018;
+  --bg-surface:#0f0f1c;
+  --bg-field:rgba(255,255,255,.04);
+  --bg-modal-overlay:rgba(0,0,0,.82);
+  --bg-node:#0c0c14;
+  --bg-dots:rgba(255,255,255,.06);
+
+  --text-primary:rgba(255,255,255,.92);
+  --text-secondary:rgba(255,255,255,.75);
+  --text-muted:rgba(255,255,255,.55);
+  --text-subtle:rgba(255,255,255,.35);
+
+  --border-soft:rgba(255,255,255,.08);
+  --border-mid:rgba(255,255,255,.12);
+  --border-strong:rgba(255,255,255,.2);
+  --shadow-elev:0 18px 48px rgba(0,0,0,.7);
+  --shadow-popup:0 10px 40px rgba(0,0,0,.8);
+
+  --edge-default:rgba(228,176,176,.68);
+  --edge-highlight:rgba(255,156,128,.98);
+  --edge-dependency:rgba(170,197,255,.78);
+  --edge-dependency-highlight:rgba(115,170,255,.98);
+}
+
+html[data-theme="light"]{
+  --bg-gradient-angle:180deg;
+  --bg-gradient-from:#f8fbff;
+  --bg-gradient-to:#e9f1ff;
+
+  --bg-canvas:#ffffff;
+  --bg-panel:rgba(255,255,255,.86);
+  --bg-panel-hover:rgba(239,244,253,.94);
+  --bg-popup:#ffffff;
+  --bg-surface:#ffffff;
+  --bg-field:rgba(15,23,42,.04);
+  --bg-modal-overlay:rgba(15,23,42,.5);
+  --bg-node:rgba(255,255,255,0.5);
+  --bg-dots:rgba(15,23,42,.08);
+
+  --text-primary:#0f172a;
+  --text-secondary:#1e293b;
+  --text-muted:#334155;
+  --text-subtle:#475569;
+
+  --border-soft:rgba(15,23,42,.12);
+  --border-mid:rgba(15,23,42,.16);
+  --border-strong:rgba(15,23,42,.24);
+  --shadow-elev:0 18px 48px rgba(15,23,42,.2);
+  --shadow-popup:0 10px 30px rgba(15,23,42,.22);
+
+  --edge-default:rgba(100,116,139,.52);
+  --edge-highlight:rgba(220,53,69,.9);
+  --edge-dependency:rgba(37,99,235,.56);
+  --edge-dependency-highlight:rgba(29,78,216,.9);
+}

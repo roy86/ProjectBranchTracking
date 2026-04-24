@@ -23,7 +23,13 @@ body::after{
   transition:border-color .18s ease-out, box-shadow .18s ease-out;
 }
 body.edit-mode::after{
-  border-color:color-mix(in srgb, var(--color-warning) 55%, transparent);
+  border-image: repeating-linear-gradient(
+    -55deg,
+    #000000,
+    #000000 20px,
+    var(--color-warning) 20px,
+    var(--color-warning) 40px
+  ) 10;
   box-shadow:
     inset 0 0 0 1px color-mix(in srgb, var(--color-warning) 40%, transparent),
     inset 0 0 22px color-mix(in srgb, var(--color-warning) 38%, transparent),

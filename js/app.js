@@ -1655,7 +1655,7 @@ document.getElementById('j-apply').onclick=()=>{
     roundPositionOverrides();
     normalizeAllDeps();
     document.getElementById('jmod').classList.remove('open');
-    document.getElementById('title-text').textContent = data.title || 'AI Programs of Work';
+    syncTitle();
     selId=null;
     autoLayout();
     render();
@@ -1667,6 +1667,12 @@ document.getElementById('j-apply').onclick=()=>{
 /* ══════════════════════════════════════════════════
    TITLE
 ══════════════════════════════════════════════════ */
+const DEFAULT_TITLE = 'AI Programs of Work';
+function syncTitle(){
+  const t = (data && data.title) ? data.title : DEFAULT_TITLE;
+  document.getElementById('title-text').textContent = t;
+  document.title = t;
+}
 document.getElementById('title-text').onclick=()=>{
   if(!ensureEditMode('rename the tree')) return;
   document.getElementById('t-inp').value = data.title || '';
@@ -1677,7 +1683,7 @@ document.getElementById('t-cancel').onclick=()=>document.getElementById('tmod').
 document.getElementById('tmod').addEventListener('click',e=>{if(e.target===document.getElementById('tmod'))document.getElementById('tmod').classList.remove('open')});
 document.getElementById('t-save').onclick=()=>{
   const v = document.getElementById('t-inp').value.trim();
-  if(v){data.title=v;document.getElementById('title-text').textContent=v;}
+  if(v){data.title=v;syncTitle();}
   document.getElementById('tmod').classList.remove('open');
 };
 document.getElementById('t-inp').addEventListener('keydown',e=>{
@@ -1804,7 +1810,7 @@ function init(){
   loadSettings();
   data = loadDataFromSources();
   roundPositionOverrides();
-  document.getElementById('title-text').textContent = data.title || 'AI Programs of Work';
+  syncTitle();
   applyCssSettings();
   applyThemeFromSettings();
   initSettingsPanel();

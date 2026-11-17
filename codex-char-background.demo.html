@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>codex-char-background demo</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #0a0a0a; color: #ddd; font-family: system-ui, sans-serif; }
+    #bg { position: fixed; inset: 0; }
+    .card {
+      position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%);
+      padding: 32px 40px; border-radius: 12px;
+      background: rgba(10,10,10,0.55); backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center; z-index: 10;
+    }
+    .card h1 { margin: 0 0 8px; font-size: 22px; font-weight: 500; }
+    .card p { margin: 0 0 16px; opacity: 0.7; font-size: 14px; }
+    button {
+      margin: 4px; padding: 8px 14px; border-radius: 999px;
+      background: #fff; color: #000; border: 0; cursor: pointer; font-size: 13px;
+    }
+    button.alt { background: transparent; color: #ddd; border: 1px solid rgba(255,255,255,0.2); }
+  </style>
+</head>
+<body>
+  <div id="bg"></div>
+  <div class="card">
+    <h1>Welcome to Codex</h1>
+    <p>Animated character background demo</p>
+    <button id="mode">Toggle mode</button>
+    <button id="ramp" class="alt">Cycle ramp</button>
+    <button id="bigger" class="alt">Font +</button>
+    <button id="smaller" class="alt">Font −</button>
+  </div>
+
+  <script src="./codex-char-background.js"></script>
+  <script>
+    // No `columns`/`rows` passed → autoSize is on by default. The grid is
+    // derived from the container's size and the current fontSize, and is
+    // re-derived whenever the container resizes or the font size changes.
+    const fx = new CodexCharBackground({
+      container: document.getElementById('bg'),
+      mode: 'noise',
+      backgroundColor: '#252525',
+      foregroundColor: '#555555',
+      vignette: true,
+      fps: 20,
+      fontSize: 8,
+    });
+    fx.start();
+
+    document.getElementById('mode').addEventListener('click', () => {
+      fx.setMode(fx.getMode() === 'noise' ? 'composite' : 'noise');
+    });
+    document.getElementById('ramp').addEventListener('click', () => fx.cycleRamp());
+    document.getElementById('bigger').addEventListener('click', () => fx.setFontSize(fx.fontSize + 2));
+    document.getElementById('smaller').addEventListener('click', () => fx.setFontSize(Math.max(6, fx.fontSize - 2)));
+  </script>
+</body>
+</html>

@@ -1,283 +1,301 @@
-/**
- * AI Strategy Pillars — Australian Mutual Banking
- *
- * Structure: 8 independent pillars (no shared root).
- * Each pillar = a major opportunity area for AI-enabled change.
- * Branches under each pillar = strategic features and deliverables
- * that reshape the operating model around an AI-augmented workforce
- * and a member-centred, resilient experience.
- *
- * Depth: Pillar (L1) → Strategic Feature (L2) → Capability (L3).
- * Layout (_x / _y) is computed on load; do not hand-edit here.
- *
- * Regulatory anchors informing the structure:
- *   - APRA CPS 230 (Operational Risk Management, in force)
- *   - APRA CPS 234 (Information Security)
- *   - AUSTRAC AML/CTF reforms (2026 phased)
- *   - Scam Prevention Framework (legislated 2025)
- *   - Financial Accountability Regime (FAR)
- *   - Consumer Data Right (CDR)
- *   - Banking Code of Practice
- */
 window.TREE_DATA = {
-  "title": "AI Strategy Pillars — Mutual Banking",
+  "title": "Data & AI | Outcomes Tree",
+  "meta": {
+    "projectOrder": [
+      "Cloud Data Platform Project",
+      "AI Strategy"
+    ],
+    "workstreamOrder": [
+      "Better member service",
+      "More capable employees",
+      "Better-informed decisions",
+      "Smarter lending and growth",
+      "Reliable, scalable foundations"
+    ],
+    "relatedActionOrder": []
+  },
   "nodes": [
-
-    /* ════════════════════════════════════════════════════════════════
-       PILLAR 1 — MEMBER EXPERIENCE
-       Outcome: Every member interaction feels human, personal, instant.
-       Frontline staff supported in the moments that matter.
-    ════════════════════════════════════════════════════════════════ */
     {
-      "id": "p-mx",
-      "title": "MEMBER\nEXPERIENCE",
-      "desc": "Transform every member touchpoint with AI-augmented service that feels human, personal and instant — and frees staff to focus on moments that truly matter.",
-      "icon": "💬", "status": "prog", "parent": null,
-      "deps": [], "link": "", "etaDate": "",
-      "childLayout": "vertical"
-    },
-
-    {
-      "id": "mx-support",
-      "title": "24/7 MEMBER\nSUPPORT",
-      "desc": "Self-service and intelligent routing across voice and digital, so members get help any hour and complex needs reach the right human quickly.",
-      "icon": "🕐", "status": "prog", "parent": "p-mx",
-      "deps": [], "link": "", "etaDate": "",
-      "childLayout": "horizontal-right"
+      "id": "data-ai-program",
+      "title": "Better outcomes\nthrough data & AI",
+      "parent": null,
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "even",
+      "desc": "Condensed outcome-first presentation model. Five outcomes and fifteen deliverables. Groupings are presentation choices, not new approved scope. Detailed source IDs are mapped in deliverable descriptions and the companion mapping file."
     },
     {
-      "id": "mx-support-voice",
-      "title": "VOICE AI\nSELF-SERVICE",
-      "desc": "After-hours voice assistant handling balances, transactions, card actions and account queries in natural conversation.",
-      "icon": "🎙", "status": "plan", "parent": "mx-support",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "outcome-service",
+      "title": "Better member service",
+      "parent": "data-ai-program",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-bullseye",
+      "childLayout": "vertical",
+      "sequence": 1,
+      "desc": "Outcome grouping for navigation. Does not imply completion or a separate funded project."
     },
     {
-      "id": "mx-support-route",
-      "title": "INTELLIGENT\nROUTING",
-      "desc": "Intent detection and context-aware routing to the best-equipped agent, reducing transfers and wait times.",
-      "icon": "🧭", "status": "prog", "parent": "mx-support",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-knowledge-agent",
+      "title": "Trusted staff answers",
+      "parent": "outcome-service",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 1,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Better member service",
+      "sourceRelatedAction": "Trusted staff answers",
+      "desc": "Governed knowledge, retrieval quality, permissions and SME acceptance. Current knowledge-agent delivery does not require the entire CDP or Foundry.\nDetailed register IDs: ai-knowledge-agent, ai-knowledge-export, ai-knowledge-tests, ai-knowledge-sme-exit.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-support-auth",
-      "title": "VOICE &\nBEHAVIOURAL AUTH",
-      "desc": "Biometric voice and behavioural signals to authenticate members seamlessly and resist impersonation.",
-      "icon": "🔑", "status": "plan", "parent": "mx-support",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "mx-copilot",
-      "title": "AGENT\nCOPILOT",
-      "desc": "Real-time assistance for contact centre staff: knowledge, suggestions, compliance checks and automated wrap-up.",
-      "icon": "🤖", "status": "prog", "parent": "p-mx",
-      "deps": [], "link": "", "etaDate": "",
-      "childLayout": "horizontal-right"
+      "id": "ai-call-summary",
+      "title": "Better call summaries",
+      "parent": "outcome-service",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 2,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Better member service",
+      "sourceRelatedAction": "Better call summaries",
+      "desc": "Improve summary quality and staff-reviewed wrap-up. Separate from knowledge-agent release.\nDetailed register IDs: ai-call-summary, ai-wrapup-qa.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-copilot-summary",
-      "title": "LIVE CALL\nSUMMARY",
-      "desc": "Real-time transcription with auto-generated call notes and CRM updates, reducing after-call work.",
-      "icon": "📝", "status": "prog", "parent": "mx-copilot",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-genesys-voice",
+      "title": "Connected voice assistance",
+      "parent": "outcome-service",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 3,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Better member service",
+      "sourceRelatedAction": "Connected voice assistance",
+      "desc": "Integration path requires Foundry readiness and an accepted knowledge service. Not a prerequisite for current staff knowledge access.\nDetailed register IDs: ai-genesys-voice, ai-foundry-ready.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-copilot-nba",
-      "title": "NEXT-BEST\nACTION PROMPTS",
-      "desc": "Context-aware suggestions for the next conversation step — retention, cross-sell, hardship support.",
-      "icon": "🎯", "status": "plan", "parent": "mx-copilot",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "outcome-employees",
+      "title": "More capable employees",
+      "parent": "data-ai-program",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-bullseye",
+      "childLayout": "vertical",
+      "sequence": 2,
+      "desc": "Outcome grouping for navigation. Does not imply completion or a separate funded project."
     },
     {
-      "id": "mx-copilot-comply",
-      "title": "COMPLIANCE\nWHISPER",
-      "desc": "Silently flags required disclosures, regulated language and script adherence during live calls.",
-      "icon": "🛎", "status": "plan", "parent": "mx-copilot",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-copilot",
+      "title": "Everyday Copilot use",
+      "parent": "outcome-employees",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 1,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "More capable employees",
+      "sourceRelatedAction": "Everyday Copilot use",
+      "desc": "Role-based learning, champions and measured active use. Licence assignment is not realised benefit.\nDetailed register IDs: ai-copilot, ai-learning, ai-adoption-baseline, ai-adoption-champions.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-copilot-wrap",
-      "title": "AUTO\nWRAP-UP",
-      "desc": "Suggests call disposition, updates systems and drafts follow-up correspondence.",
-      "icon": "✅", "status": "plan", "parent": "mx-copilot",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "mx-pers",
-      "title": "HYPER-\nPERSONALISATION",
-      "desc": "Each member sees content, offers and guidance relevant to their life and goals — not a generic experience.",
-      "icon": "✨", "status": "plan", "parent": "p-mx",
-      "deps": [], "link": "", "etaDate": "",
-      "childLayout": "horizontal-right"
+      "id": "ai-approved-tools",
+      "title": "Approved AI tools",
+      "parent": "outcome-employees",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 2,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "More capable employees",
+      "sourceRelatedAction": "Approved AI tools",
+      "desc": "Controlled tool access and engineering enablement. Coding assistance can accelerate CDP but is not a mandatory platform predecessor.\nDetailed register IDs: ai-approved-tools, ai-coding.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-pers-life",
-      "title": "LIFE-EVENT\nDETECTION",
-      "desc": "Spot signals for home purchase, new job, retirement or family change to offer timely help.",
-      "icon": "🌱", "status": "plan", "parent": "mx-pers",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-hr-agent",
+      "title": "Business knowledge agents",
+      "parent": "outcome-employees",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 3,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "More capable employees",
+      "sourceRelatedAction": "Business knowledge agents",
+      "desc": "Business-owned knowledge, controlled access and acceptance. P&C remains distinct from contact-centre delivery.\nDetailed register IDs: ai-hr-agent, ai-opportunity-backlog.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-pers-offer",
-      "title": "CONTEXTUAL\nOFFER ENGINE",
-      "desc": "Present the right product or service in the right channel at the right moment.",
-      "icon": "🎁", "status": "plan", "parent": "mx-pers",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "outcome-decisions",
+      "title": "Better-informed decisions",
+      "parent": "data-ai-program",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-bullseye",
+      "childLayout": "vertical",
+      "sequence": 3,
+      "desc": "Outcome grouping for navigation. Does not imply completion or a separate funded project."
     },
     {
-      "id": "mx-pers-well",
-      "title": "FINANCIAL\nWELLNESS NUDGES",
-      "desc": "Personalised coaching and saving prompts to help members build financial resilience.",
-      "icon": "💚", "status": "expl", "parent": "mx-pers",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "mx-omni",
-      "title": "OMNICHANNEL\nCONTINUITY",
-      "desc": "Seamless hand-off across phone, chat, app and branch — one member, one conversation.",
-      "icon": "🔀", "status": "plan", "parent": "p-mx",
-      "deps": [], "link": "", "etaDate": "",
-      "childLayout": "horizontal-right"
+      "id": "cdp-consumption",
+      "title": "Reliable reporting",
+      "parent": "outcome-decisions",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 1,
+      "sourceProject": "Cloud Data Platform Project",
+      "sourceWorkstream": "Better-informed decisions",
+      "sourceRelatedAction": "Reliable reporting",
+      "desc": "Certified metrics, semantic models and reporting continuity. EDW migration and CDP delivery remain distinct scopes.\nDetailed register IDs: cdp-consumption, edw, cdp-edw, ap-20, ap-43.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-omni-view",
-      "title": "UNIFIED\nMEMBER VIEW",
-      "desc": "Single real-time view of each member across products, channels and interactions.",
-      "icon": "👤", "status": "prog", "parent": "mx-omni",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "cdp-first-data-product",
+      "title": "Trusted data products",
+      "parent": "outcome-decisions",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 2,
+      "sourceProject": "Cloud Data Platform Project",
+      "sourceWorkstream": "Better-informed decisions",
+      "sourceRelatedAction": "Trusted data products",
+      "desc": "Production data with ownership, authorised access, quality, lineage, refresh and support. Synthesised PoC data is not a production product.\nDetailed register IDs: cdp-first-data-product, cdp-medallion, cdp-governance, tdf, ap-44.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "mx-omni-cont",
-      "title": "CONVERSATION\nCONTINUITY",
-      "desc": "Resume a conversation from where it left off — chat → call → branch — without repeating context.",
-      "icon": "↪", "status": "plan", "parent": "mx-omni",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    /* ════════════════════════════════════════════════════════════════
-       PILLAR 2 — LENDING & CREDIT
-       Outcome: Compress loan decisions from days to minutes while
-       keeping member-centred judgement at the core.
-    ════════════════════════════════════════════════════════════════ */
-    {
-      "id": "p-ln",
-      "title": "LENDING &\nCREDIT",
-      "desc": "Reshape the lending operating model with AI-driven intake, serviceability and portfolio care — faster decisions, stronger outcomes, fewer handoffs.",
-      "icon": "💰", "status": "prog", "parent": null,
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "ln-intake",
-      "title": "AUTOMATED\nDOCUMENT INTAKE",
-      "desc": "Extract, classify and verify loan application documents instantly, replacing manual review queues.",
-      "icon": "📄", "status": "prog", "parent": "p-ln",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-data-agents",
+      "title": "Data-connected assistants",
+      "parent": "outcome-decisions",
+      "deps": [
+        "cdp-first-data-product"
+      ],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 3,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Better-informed decisions",
+      "sourceRelatedAction": "Data-connected assistants",
+      "desc": "Controlled testing needs a governed production data product with access, quality and support evidence. Scale only with outcome, control and cost evidence.\nDetailed register IDs: ai-data-agents, ai-data-test, ai-evidence-scale.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "ln-intake-income",
-      "title": "INCOME &\nPAYSLIP EXTRACTION",
-      "desc": "Automated extraction of income data from payslips, ATO statements and employer letters.",
-      "icon": "💵", "status": "prog", "parent": "ln-intake",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "outcome-growth",
+      "title": "Smarter lending and growth",
+      "parent": "data-ai-program",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-bullseye",
+      "childLayout": "vertical",
+      "sequence": 4,
+      "desc": "Outcome grouping for navigation. Does not imply completion or a separate funded project."
     },
     {
-      "id": "ln-intake-stmt",
-      "title": "BANK STATEMENT\nANALYSIS",
-      "desc": "Categorise transactions, verify income and identify expenses across member-supplied statements.",
-      "icon": "📊", "status": "prog", "parent": "ln-intake",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-lending-pilot",
+      "title": "Assisted document review",
+      "parent": "outcome-growth",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 1,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Smarter lending and growth",
+      "sourceRelatedAction": "Assisted document review",
+      "desc": "Discovery can proceed before CDP completion. Pilot requires funding, data access, risk review and business acceptance; no automated credit decisioning is implied.\nDetailed register IDs: ai-lending-discovery, ai-lending-pilot-readiness, ai-lending-pilot.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "ln-intake-id",
-      "title": "ID & BIOMETRIC\nVERIFICATION",
-      "desc": "Liveness checks, document verification and biometric matching against verified ID.",
-      "icon": "🪪", "status": "prog", "parent": "ln-intake",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "ln-serve",
-      "title": "AI-ASSISTED\nSERVICEABILITY",
-      "desc": "Evidence-based serviceability assessment with explainable outputs that support responsible lending obligations.",
-      "icon": "⚖", "status": "plan", "parent": "p-ln",
-      "deps": [], "link": "", "etaDate": ""
-    },
-    {
-      "id": "ln-serve-hem",
-      "title": "EXPENSE\nBENCHMARKING",
-      "desc": "Calibrate member-declared expenses against HEM plus behavioural spending to reduce under-stated risk.",
-      "icon": "📐", "status": "plan", "parent": "ln-serve",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-member-context",
+      "title": "Richer member context",
+      "parent": "outcome-growth",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 2,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Smarter lending and growth",
+      "sourceRelatedAction": "Richer member context",
+      "desc": "Agree persistent identity, source-of-truth, marketing requirements and permissioned data. Source readiness is specific to the member use case.\nDetailed register IDs: ai-member-context, member-outcomes, ap-52, ap-56, ap-57.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "ln-serve-stab",
-      "title": "INCOME STABILITY\nMODELLING",
-      "desc": "Nuanced treatment of casual, contract, gig and variable income to fairly serve the modern workforce.",
-      "icon": "📈", "status": "plan", "parent": "ln-serve",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-offer-test",
+      "title": "Relevant member offers",
+      "parent": "outcome-growth",
+      "deps": [
+        "cdp-first-data-product",
+        "ai-member-context"
+      ],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 3,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Smarter lending and growth",
+      "sourceRelatedAction": "Relevant member offers",
+      "desc": "Journey and attribution discovery can proceed in parallel. Controlled testing requires trusted data and permissioned member context.\nDetailed register IDs: ai-offer-discovery, ai-offer-test.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "ln-serve-exp",
-      "title": "EXPLAINABLE\nCREDIT DECISIONS",
-      "desc": "Every decision accompanied by a plain-English rationale the member and regulator can understand.",
-      "icon": "🔍", "status": "plan", "parent": "ln-serve",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "ln-arrears",
-      "title": "PORTFOLIO &\nARREARS INTELLIGENCE",
-      "desc": "Spot hardship early and act with empathy — keeping members housed and performing.",
-      "icon": "🛟", "status": "plan", "parent": "p-ln",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "outcome-foundations",
+      "title": "Reliable, scalable foundations",
+      "parent": "data-ai-program",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-bullseye",
+      "childLayout": "vertical",
+      "sequence": 5,
+      "desc": "Outcome grouping for navigation. Does not imply completion or a separate funded project."
     },
     {
-      "id": "ln-arrears-ews",
-      "title": "EARLY WARNING\nSIGNALS",
-      "desc": "Behavioural and transactional models predicting hardship months before traditional arrears.",
-      "icon": "⚠", "status": "plan", "parent": "ln-arrears",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "cdp-platform-foundation",
+      "title": "Modern data platform",
+      "parent": "outcome-foundations",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 1,
+      "sourceProject": "Cloud Data Platform Project",
+      "sourceWorkstream": "Reliable, scalable foundations",
+      "sourceRelatedAction": "Modern data platform",
+      "desc": "PoC evidence informs platform/funding decisions. Production hardening and architecture/security approval precede live connectivity and production data products. EDW compliance migration is not the strategic CDP build.\nDetailed register IDs: cdp, cdp-poc, cdp-phase2-decision, cdp-platform-foundation, cdp-production-approval, cdp-source-connectivity.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "ln-arrears-hard",
-      "title": "HARDSHIP\nOUTREACH AGENT",
-      "desc": "Tailored contact plans and conversation guides for members showing financial stress.",
-      "icon": "🤝", "status": "plan", "parent": "ln-arrears",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-platform",
+      "title": "Governed AI services",
+      "parent": "outcome-foundations",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 2,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Reliable, scalable foundations",
+      "sourceRelatedAction": "Governed AI services",
+      "desc": "Distinct M365/Copilot and Foundry paths, identity, permissions, lifecycle controls and APRA evidence. Current knowledge-agent delivery is not blocked by all Foundry work.\nDetailed register IDs: ai-platform, ai-m365-services, ai-foundry-ready, ai-governance, ai-apra, ai-controls.\nCurrent aggregate status not established; no completion percentage inferred."
     },
     {
-      "id": "ln-arrears-coll",
-      "title": "COLLECTIONS\nCOPILOT",
-      "desc": "Agent-side assistant suggesting empathetic, compliant negotiation paths and hardship options.",
-      "icon": "💬", "status": "expl", "parent": "ln-arrears",
-      "deps": [], "link": "", "etaDate": ""
-    },
-
-    {
-      "id": "ln-jour",
-      "title": "MEMBER-LED\nLENDING JOURNEYS",
-      "desc": "Conversational, self-serve experiences that adapt to how each member wants to apply.",
-      "icon": "🗺", "status": "plan", "parent": "p-ln",
-      "deps": [], "link": "", "etaDate": ""
-    },
-    {
-      "id": "ln-jour-conv",
-      "title": "CONVERSATIONAL\nAPPLICATION",
-      "desc": "Natural-language loan application that collects required data through dialogue, not long forms.",
-      "icon": "🗣", "status": "plan", "parent": "ln-jour",
-      "deps": [], "link": "", "etaDate": ""
-    },
-    {
-      "id": "ln-jour-pre",
-      "title": "PRE-APPROVAL\nNUDGES",
-      "desc": "Proactively notify eligible members of pre-approved offers aligned to their life stage.",
-      "icon": "📬", "status": "expl", "parent": "ln-jour",
-      "deps": [], "link": "", "etaDate": ""
+      "id": "ai-operations",
+      "title": "Sustainable operations",
+      "parent": "outcome-foundations",
+      "deps": [],
+      "status": "none",
+      "icon": "fa-solid fa-diagram-project",
+      "childLayout": "vertical",
+      "sequence": 3,
+      "sourceProject": "AI Strategy",
+      "sourceWorkstream": "Reliable, scalable foundations",
+      "sourceRelatedAction": "Sustainable operations",
+      "desc": "Service ownership, monitoring, resilience, FinOps and shared delivery capacity. Recruitment supports delivery but is not a blanket technical prerequisite. Funding requests are not approvals.\nDetailed register IDs: cdp-secops, ai-finops, ai-control-plane, ai-resourcing, ai-funding.\nCurrent aggregate status not established; no completion percentage inferred."
     }
   ],
-  "positions": {}
+  "positions": {},
+  "viewPositions": {}
 };

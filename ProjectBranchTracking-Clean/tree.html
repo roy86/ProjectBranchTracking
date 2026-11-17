@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program of Work</title>
+<link rel="stylesheet" href="styles/tokens.css">
+<link rel="stylesheet" href="styles/tree.css">
+</head>
+<body aria-busy="true">
+<div id="loading-state" role="status"><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i><span id="loading-label">Loading program…</span></div>
+<div id="feedback" role="status" aria-live="polite" aria-atomic="true" hidden></div>
+
+<svg role="group" aria-label="Interactive program tree. Select a node for details; double-click to focus its branch." id="svg" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle id="dots-circle" cx="20" cy="20" r="0.7"/>
+    </pattern>
+    <marker id="dep-arrow" viewBox="0 0 10 10" refX="9" refY="5"
+            markerUnits="strokeWidth" markerWidth="5" markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="context-stroke"/>
+    </marker>
+  </defs>
+  <rect id="canvas-bg" x="-9999" y="-9999" width="25000" height="25000"/>
+  <rect x="-9999" y="-9999" width="25000" height="25000" fill="url(#dots)"/>
+  <g id="tg">
+    <g id="lg"></g>
+    <g id="ng"></g>
+  </g>
+</svg>
+
+<header id="topbar">
+  <div id="top-left">
+    <img class="company-logo" src="images/logo.png" alt="Teachers Mutual Bank Limited" width="503" height="143">
+    <h1><button id="title-text" type="button" title="Rename program in edit mode">Program of Work</button></h1>
+  </div>
+  <nav id="top-right" aria-label="Tree tools">
+    <div class="ctrls">
+      <label class="sr-only" for="view-mode-select">Arrange tree by</label>
+      <select class="view-select" id="view-mode-select" title="Arrange tree by">
+        <option value="project">Project</option><option value="workstream">Workstream</option><option value="relatedAction">Related action</option>
+      </select>
+      <button class="btn icon-btn" id="btn-project-highlight" aria-controls="project-panel" aria-expanded="false" aria-label="Highlight workstream" data-tip="Highlight workstream"><i class="fa-solid fa-filter" aria-hidden="true"></i></button>
+      <button class="btn icon-btn" id="btn-focus-clear" aria-label="Show all branches" data-tip="Show all branches"><i class="fa-solid fa-eye" aria-hidden="true"></i></button>
+      <button class="btn icon-btn" id="btn-json" aria-label="Import or export data" data-tip="Import / export"><i class="fa-solid fa-arrow-right-arrow-left" aria-hidden="true"></i></button>
+      <button class="btn icon-btn" id="btn-layout" aria-label="Reset node positions" data-tip="Reset positions"><i class="fa-solid fa-arrows-rotate" aria-hidden="true"></i></button>
+      <button class="btn icon-btn" id="btn-settings" aria-controls="settings-panel" aria-expanded="false" aria-label="Display settings" data-tip="Display settings"><i class="fa-solid fa-sliders" aria-hidden="true"></i></button>
+      <button class="btn" id="btn-add"><i class="fa-solid fa-plus" aria-hidden="true"></i>Add node</button>
+      <button class="btn btn-primary" id="btn-editmode" aria-label="Enable edit mode"><i class="fa-solid fa-pen" aria-hidden="true"></i><span>Edit tree</span></button>
+    </div>
+  </nav>
+</header>
+
+<!-- HIGHLIGHT PANEL -->
+<aside id="project-panel" aria-hidden="true" aria-labelledby="project-panel-title">
+  <div class="settings-head">
+    <h2 id="project-panel-title">Highlight workstream</h2>
+    <button class="settings-close" id="project-close" aria-label="Close workstream highlight"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <div class="settings-body">
+    <div class="setting-row">
+      <label class="sr-only" id="project-select-label" for="project-select">Workstream</label>
+      <select id="project-select"></select>
+    </div>
+    <div class="settings-actions">
+      <button class="m-btn" id="project-clear">Clear</button>
+    </div>
+  </div>
+</aside>
+
+<!-- SETTINGS PANEL -->
+<div id="settings-panel" aria-hidden="true">
+  <div class="settings-head">
+    <h2 id="settings-title">Display settings</h2>
+    <button class="settings-close" id="settings-close" aria-label="Close settings"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  </div>
+  <div class="settings-body">
+
+    <div class="setting-row">
+      <label id="theme-label">Appearance</label>
+      <div class="seg" id="s-theme" role="group" aria-labelledby="theme-label">
+        <button type="button" data-val="auto">Auto</button>
+        <button type="button" data-val="light">Light</button>
+        <button type="button" data-val="dark">Dark</button>
+      </div>
+    </div>
+
+    <div class="setting-group-label">Lines &amp; nodes</div>
+
+    <div class="setting-row">
+      <label for="s-line-thickness">Line thickness<span class="val" id="s-line-thickness-val"></span></label>
+      <input type="range" id="s-line-thickness" min="0.5" max="2.5" step="0.1"/>
+    </div>
+
+    <div class="setting-row">
+      <label for="s-node-border">Node border<span class="val" id="s-node-border-val"></span></label>
+      <input type="range" id="s-node-border" min="0.5" max="2.5" step="0.1"/>
+    </div>
+
+    <div class="setting-group-label">Spacing</div>
+
+    <div class="setting-row">
+      <label for="s-vertical-gap">Stacked sibling gap<span class="val" id="s-vertical-gap-val"></span></label>
+      <input type="range" id="s-vertical-gap" min="30" max="160" step="2" aria-describedby="s-vertical-gap-help"/>
+      <p class="setting-help" id="s-vertical-gap-help">Vertical and side-branch stacks with multiple children.</p>
+    </div>
+
+    <div class="setting-row">
+      <label for="s-side-offset">Side-branch gap<span class="val" id="s-side-offset-val"></span></label>
+      <input type="range" id="s-side-offset" min="30" max="280" step="5" aria-describedby="s-side-offset-help"/>
+      <p class="setting-help" id="s-side-offset-help">Left/right branches only. Keeps sibling columns aligned.</p>
+    </div>
+
+    <div class="setting-row">
+      <label for="s-level-gap">Downward level spacing<span class="val" id="s-level-gap-val"></span></label>
+      <input type="range" id="s-level-gap" min="0.6" max="1.8" step="0.05" aria-describedby="s-level-gap-help"/>
+      <p class="setting-help" id="s-level-gap-help">Even and vertical layouts. A minimum gap protects labels.</p>
+    </div>
+
+    <div class="setting-group-label">Branch angle</div>
+
+    <div class="setting-row">
+      <label for="s-side-angle">Side-branch drop angle<span class="val" id="s-side-angle-val"></span></label>
+      <input type="range" id="s-side-angle" min="0" max="45" step="1" aria-describedby="s-side-angle-help"/>
+      <p class="setting-help" id="s-side-angle-help">Left/right branches only. Zero keeps the first child level.</p>
+    </div>
+
+    <div class="settings-actions">
+      <button class="m-btn" id="s-reset">Reset defaults</button>
+    </div>
+
+  </div>
+</div>
+
+<section id="popup" aria-labelledby="pop-title">
+  <button class="pop-close" id="pop-x" aria-label="Close node details"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+  <div class="pop-status" id="pop-status"></div>
+  <h3 id="pop-title"></h3>
+  <p id="pop-context" class="context-note" hidden>Dependency outside the focused branch.</p>
+  <div class="pop-desc" id="pop-desc"></div>
+  <div class="pop-section" id="pop-stage-s">
+    <div class="pop-sec-lbl">Stage Gates</div>
+    <div id="pop-stage-gates" class="stage-gates"></div>
+  </div>
+  <div class="pop-section" id="pop-eta-s">
+    <div class="pop-sec-lbl">Estimated Delivery</div>
+    <div id="pop-eta" class="pop-meta"></div>
+  </div>
+  <div class="pop-section" id="pop-link-s">
+    <div class="pop-sec-lbl">Link</div>
+    <a id="pop-link" class="pop-link-anchor" href="#" target="_blank" rel="noopener noreferrer"></a>
+  </div>
+  <div class="pop-section" id="pop-parent-s">
+    <div class="pop-sec-lbl">Parent</div>
+    <div id="pop-parent"></div>
+  </div>
+  <div class="pop-section" id="pop-kids-s">
+    <div class="pop-sec-lbl">Children</div>
+    <div id="pop-kids"></div>
+  </div>
+  <div class="pop-section" id="pop-deps-s">
+    <div class="pop-sec-lbl">Depends On</div>
+    <div id="pop-deps"></div>
+  </div>
+  <div class="pop-section" id="pop-blocks-s">
+    <div class="pop-sec-lbl">Enables</div>
+    <div id="pop-blocks"></div>
+  </div>
+  <div class="pop-actions">
+    <button class="pop-btn" id="pop-focus">Focus branch</button>
+    <button class="pop-btn" id="pop-edit">Edit</button>
+    <button class="pop-btn" id="pop-addchild"><i class="fa-solid fa-plus" aria-hidden="true"></i>Add child</button>
+    <button class="pop-btn" id="pop-close2">Close</button>
+  </div>
+</section>
+
+<div id="hover-tip" role="tooltip" aria-hidden="true">
+  <div class="hover-tip-title" id="hover-tip-title"></div>
+  <p id="hover-tip-context" class="context-note" hidden>Dependency outside the focused branch.</p>
+  <div class="hover-tip-meta">
+    <div class="hover-tip-row">
+      <span>Project</span>
+      <strong id="hover-tip-project"></strong>
+    </div>
+    <div class="hover-tip-row">
+      <span>Workstream</span>
+      <strong id="hover-tip-workstream"></strong>
+    </div>
+    <div class="hover-tip-row">
+      <span>Status</span>
+      <strong id="hover-tip-status"></strong>
+    </div>
+  </div>
+</div>
+
+<div id="tree-key">
+  <h2 class="sr-only">Node status</h2>
+  <div class="key-row"><div class="key-circle key-circle--done"></div>Done</div>
+  <div class="key-row"><div class="key-circle key-circle--prog"></div>In Progress</div>
+  <div class="key-row"><div class="key-circle key-circle--plan"></div>Planned</div>
+  <div class="key-row"><div class="key-circle key-circle--expl"></div>Exploring</div>
+</div>
+
+<div id="zctl" role="group" aria-label="Zoom controls">
+  <button id="z-out" aria-label="Zoom out"><i class="fa-solid fa-minus" aria-hidden="true"></i></button>
+  <output id="z-pct" aria-label="Zoom level">100%</output>
+  <button id="z-in" aria-label="Zoom in"><i class="fa-solid fa-plus" aria-hidden="true"></i></button>
+  <button id="z-fit2" aria-label="Fit tree" title="Fit tree"><i class="fa-solid fa-expand" aria-hidden="true"></i></button>
+</div>
+<p id="canvas-help">Drag to pan · Scroll to zoom · Double-click to focus</p>
+
+<!-- EDIT MODAL -->
+<div class="modal-bg glass" id="emod">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="e-head" tabindex="-1">
+    <div class="modal-head">
+      <h2 id="e-head">Edit Node</h2>
+      <button class="settings-close" id="e-cancel-top" aria-label="Close node editor"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+    </div>
+    <div class="editor-body">
+    <div class="fg"><label for="e-title">Title</label><input type="text" id="e-title"/></div>
+    <div class="fg"><label for="e-desc">Description</label><textarea id="e-desc"></textarea></div>
+    <h3 class="form-section">Source details</h3>
+    <div class="fg"><label for="e-source-project">Project</label><input type="text" id="e-source-project"/></div>
+    <div class="fg"><label for="e-source-workstream">Workstream</label><input type="text" id="e-source-workstream"/></div>
+    <div class="fg"><label for="e-source-related-action">Related Action</label><input type="text" id="e-source-related-action"/></div>
+    <h3 class="form-section">Progress and delivery</h3>
+    <div class="fg"><label for="e-status">Status</label>
+      <select id="e-status">
+        <option value="none">No status</option>
+        <option value="done">Done</option>
+        <option value="prog">In Progress</option>
+        <option value="plan">Planned</option>
+        <option value="expl">Exploring</option>
+      </select>
+    </div>
+    <div class="fg">
+      <div class="field-label">
+        <label for="e-icon">Font Awesome icon</label>
+        <a class="icon-library-link" href="https://fontawesome.com/search?ic=free&amp;s=solid" target="_blank" rel="noopener noreferrer" aria-label="Browse Font Awesome icons (opens in a new tab)">Icon library <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></a>
+      </div>
+      <input type="text" id="e-icon" list="e-icon-options" placeholder="Search icons, e.g. database" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="e-icon-help"/>
+      <datalist id="e-icon-options"></datalist>
+      <p id="e-icon-help" class="setting-help">Type an icon name and choose a bundled icon from the suggestions.</p>
+    </div>
+    <div class="fg"><label for="e-link">Link URL</label><input type="url" id="e-link" placeholder="https://example.com/work-item"/></div>
+    <div class="fg"><label for="e-eta">Estimated delivery date</label><input type="date" id="e-eta"/></div>
+    <div class="fg">
+      <label>Stage gate status</label>
+      <div id="e-stage-statuses" class="stage-edit-list"></div>
+    </div>
+    <h3 class="form-section">Relationships and layout</h3>
+    <div class="fg"><label for="e-parent">Parent</label>
+      <select id="e-parent"><option value="">— root —</option></select>
+    </div>
+    <div class="fg"><label for="e-child-layout">Child layout</label>
+      <select id="e-child-layout">
+        <option value="even">Even — spread horizontally below</option>
+        <option value="vertical">Vertical — stacked column below</option>
+        <option value="horizontal-right">Horizontal right — branch to the right</option>
+        <option value="horizontal-left">Horizontal left — branch to the left</option>
+      </select>
+    </div>
+    <div class="fg"><label for="e-attach">Parent attachment</label>
+      <select id="e-attach">
+        <option value="">— inherit from parent —</option>
+        <option value="even">Even</option>
+        <option value="vertical">Vertical</option>
+        <option value="horizontal-right">Horizontal right</option>
+        <option value="horizontal-left">Horizontal left</option>
+      </select>
+    </div>
+    <div class="fg">
+      <label for="e-deps-search">Dependencies</label>
+      <input type="search" aria-label="Search dependencies" id="e-deps-search" placeholder="Search nodes"/>
+      <select id="e-deps" multiple size="5" aria-label="Dependencies. Hold Control or Command to select multiple."></select>
+    </div>
+    </div>
+    <div class="mf">
+      <button class="m-btn m-btn-del" id="e-del">Delete</button>
+      <button class="m-btn" id="e-cancel">Cancel</button>
+      <button class="m-btn m-btn-ok" id="e-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- JSON MODAL -->
+<div class="modal-bg  glass" id="jmod">
+  <div class="modal modal-wide" role="dialog" aria-modal="true" aria-labelledby="json-title" tabindex="-1">
+    <h2 id="json-title">Program data</h2><p class="form-help">Export your current tree or apply a replacement JSON dataset. Changes stay in this tab until you export them.</p>
+    <label class="sr-only" for="jtx">Program JSON</label><textarea id="jtx" spellcheck="false"></textarea>
+    <div class="mf">
+      <button class="m-btn" id="j-close">Close</button>
+      <button class="m-btn" id="j-copy"><i class="fa-solid fa-copy" aria-hidden="true"></i>Copy JSON</button>
+      <button class="m-btn m-btn-ok" id="j-apply">Apply data</button>
+    </div>
+  </div>
+</div>
+
+<!-- TITLE MODAL -->
+<div class="modal-bg glass" id="tmod">
+  <div class="modal modal-narrow" role="dialog" aria-modal="true" aria-labelledby="rename-title" tabindex="-1">
+    <h2 id="rename-title">Rename program</h2>
+    <div class="fg fg-top"><label for="t-inp">Title</label><input type="text" id="t-inp"/></div>
+    <div class="mf">
+      <button class="m-btn" id="t-cancel">Cancel</button>
+      <button class="m-btn m-btn-ok" id="t-save">Save</button>
+    </div>
+  </div>
+</div>
+
+<noscript>This tool needs JavaScript enabled to display the program tree.</noscript>
+<script src="data/tree-data.js"></script>
+<script src="js/fontawesome.min.js"></script>
+<script src="js/all.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "brand": "Teachers Mutual Bank Limited",
+  "source": "ai-usage/report/theme.json (palette), report/theme.css and report/refinement.css (theme roles)",
+  "palette": {
+    "white": "#ffffff",
+    "black": "#000000",
+    "warmGrey": "#e9e7e3",
+    "slate": "#44546a",
+    "grey": "#998f8f",
+    "magenta": "#b82a57",
+    "plum": "#7e1b5b",
+    "orange": "#eb802d",
+    "navy": "#22364e",
+    "cyan": "#49b7c5"
+  }
+}

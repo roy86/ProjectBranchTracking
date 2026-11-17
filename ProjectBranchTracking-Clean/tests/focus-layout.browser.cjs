@@ -1,0 +1,44 @@
+const assert=require('node:assert/strict');const path=require('node:path');const {pathToFileURL}=require('node:url');const {chromium}=require('playwright');
+(async()=>{const browser=await chromium.launch({headless:true,...(process.env.TREE_BROWSER_PATH?{executablePath:process.env.TREE_BROWSER_PATH}:process.platform==='win32'?{channel:'msedge'}:{})});try{
+ const page=await browser.newPage({viewport:{width:1600,height:1100}});const errors=[];page.on('pageerror',e=>errors.push(e.message));page.on('dialog',d=>d.accept());
+ await page.goto(pathToFileURL(path.resolve(__dirname,'../tree.html')).href);await page.waitForFunction(()=>document.body.getAttribute('aria-busy')==='false');
+ const snapshot=()=>page.evaluate(()=>({nodes:activeNodes().map(n=>({id:n.id,...nodePos(n)})),positions:JSON.stringify([data.positions,data.viewPositions]),camera:[px,py,sc,fitMode]}));
+ const original=await snapshot();
+ await page.evaluate(()=>setBranchFocus('outcome-decisions'));
+ assert.equal(await page.evaluate(()=>nodePos(activeNodeById('outcome-decisions')).x===nodePos(activeNodeById('data-ai-program')).x),true,'hidden sibling columns must not reserve space');
+ assert.equal(await page.evaluate(()=>[...dependencyContextIds].every(id=>isNodeVisible(id))),true);
+ if(process.env.UI_SCREENSHOT_DIR)await page.screenshot({path:path.join(process.env.UI_SCREENSHOT_DIR,'focused-reflow.png')});
+ await page.evaluate(()=>clearBranchFocus());assert.deepEqual(await snapshot(),original,'real tree restores exactly');
+ const item=(id,parent,extra={})=>({id,title:id,parent,status:'prog',deps:[],icon:'fa-solid fa-diagram-project',sourceProject:'Project',sourceWorkstream:'Main',sourceRelatedAction:'Action',...extra});
+ for(const view of ['project','workstream','relatedAction'])for(const style of ['even','vertical','horizontal-left','horizontal-right']){
+  const fixture={title:'Focused layout',nodes:[item('root',null,{childLayout:'even'}),item('hidden','root',{sequence:1}),item('branch','root',{childLayout:style,sequence:2}),item('a','branch',{sequence:1,deps:['prerequisite']}),item('b','branch',{sequence:2}),item('outside','root',{sourceWorkstream:'External',sequence:3}),item('prerequisite','outside',{sourceWorkstream:'External'}),...Array.from({length:8},(_,i)=>item('hidden-'+i,'hidden'))],positions:{}};
+  await page.evaluate(({fixture,view})=>{data=sanitizeLoadedTree(fixture);focusNodeId=null;selId=null;viewMode=view;settings={...DEFAULT_SETTINGS};rebuildActiveView();autoLayout();basePositionStore().a={x:2100,y:1600};px=31;py=47;sc=.73;fitMode='width';applyT();render();},{fixture,view});
+  const before=await snapshot();
+  await page.evaluate(()=>setBranchFocus('branch'));
+  const focused=await page.evaluate(()=>({manual:nodePos(activeNodeById('a')),visible:visibleNodes().map(n=>n.id),rootX:nodePos(activeNodeById('root')).x,branchX:nodePos(activeNodeById('branch')).x,store:JSON.stringify([data.positions,data.viewPositions])}));
+  assert.ok(!focused.visible.includes('hidden')&&!focused.visible.includes('outside'));
+  assert.ok(focused.visible.includes('prerequisite'));
+  assert.equal(focused.rootX,focused.branchX,view+'/'+style+' must collapse hidden sibling slots');
+  assert.notDeepEqual(focused.manual,{x:2100,y:1600},'full-tree manual coordinates must not anchor focus');
+  assert.equal(focused.store,before.positions);
+  await page.evaluate(()=>{positionStore().a={x:900,y:750};render();});
+  await page.evaluate(()=>clearBranchFocus());assert.deepEqual(await snapshot(),before,view+'/'+style+' original full layout/camera restored');
+  await page.evaluate(()=>{setBranchFocus('branch');setBranchFocus('prerequisite');clearBranchFocus();});assert.deepEqual(await snapshot(),before,'changing focus retains the original restoration point');
+  console.log('Verified focused reflow/restoration: '+view+' / '+style);
+ }
+ await page.evaluate(()=>{setBranchFocus('branch');isEditMode=true;updateEditModeUI();positionStore().a={x:900,y:750};});
+ const saved=await page.evaluate(()=>JSON.stringify([data.positions,data.viewPositions]));
+ await page.click('#btn-layout');await page.waitForFunction(()=>!operationPending);
+ assert.equal(await page.evaluate(()=>JSON.stringify([data.positions,data.viewPositions])),saved,'focused reset must not reset the full view');
+ await page.evaluate(()=>{settings.levelGapScale=1.8;autoLayout();render();clearBranchFocus();});
+ const changed=await page.evaluate(()=>activeNodes().map(n=>({id:n.id,...nodePos(n)})));
+ await page.evaluate(()=>autoLayout());assert.deepEqual(await page.evaluate(()=>activeNodes().map(n=>({id:n.id,...nodePos(n)}))),changed,'new spacing applies consistently when leaving focus');
+ await page.evaluate(()=>{setBranchFocus('branch');setViewMode('project');});
+ assert.equal(await page.evaluate(()=>focusNodeId),null);assert.equal(await page.evaluate(()=>focusLayoutState),null);
+ await page.evaluate(()=>{setBranchFocus('branch');openEdit('__new__');document.getElementById('e-title').value='New root outside focus';document.getElementById('e-save').click();});
+ assert.equal(await page.evaluate(()=>focusNodeId),null,'saving a new node outside focus must restore the full layout');
+ assert.equal(await page.evaluate(()=>visibleNodes().length===activeNodes().length),true);
+ const afterEdit=await page.evaluate(()=>activeNodes().map(n=>({id:n.id,...nodePos(n)})));
+ await page.evaluate(()=>autoLayout());assert.deepEqual(await page.evaluate(()=>activeNodes().map(n=>({id:n.id,...nodePos(n)}))),afterEdit);
+ assert.deepEqual(errors,[]);console.log('Passed focused-only layout, dependency roots, transient drags/reset, exact full-layout/camera restoration, refocus, spacing changes and view switching.');
+}catch(error){console.error(error);process.exitCode=1;}finally{await browser.close();}})();
